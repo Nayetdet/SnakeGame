@@ -2,65 +2,59 @@
 #include <stdbool.h>
 
 #include <raylib.h>
-#include <raymath.h>
 
 #include "collisions.h"
-#include "config.h"
+#include "constants.h"
 #include "food.h"
 #include "snake.h"
-#include "utils.h"  
+#include "utils.h"
 
 int main(void) {
-    int score = 0;
-    bool isGameOver = false;
-
-    int snakeSize = 1;
-    Vector2 snake[SCREEN_SIZE];
-    snake[0] = (Vector2){0, 0};
-
-    Vector2 snakeDirection = {1, 0};
-    Vector2 food = GenerateNewFood(snake, snakeSize);
-
-    InitWindow(SCREEN_SIZE, SCREEN_SIZE, GetTitle(score));
-    SetTargetFPS(60);    
-    InitAudioDevice();
+    Snake snake;
+    Vector2 food;
     
+    InitWindow(SCREEN_SIZE, SCREEN_SIZE, "Snake");
+    SetTargetFPS(60);    
+    
+    Image icon = LoadImage("assets/icon.png");
+    SetWindowIcon(icon);
+    UnloadImage(icon);
+
+    InitAudioDevice();
     Sound eatSound = LoadSound("sounds/eat.wav");
     Sound deathSound = LoadSound("sounds/death.wav");
 
+    InitializeNewSnake(&snake);
+    InitializeNewFood(&food, &snake);
+
     while (!WindowShouldClose()) {
         BeginDrawing();
-        ClearBackground(CELL_COLOR);
+        ClearBackground(BACKGROUND_COLOR);
         DrawBackgroundGrid();
 
-        if (!isGameOver) {
-            ChangeSnakeDirection(&snakeDirection);
-            UpdateSnake(snake, snakeDirection, snakeSize);
+        if (snake.isAlive) {
+            ChangeSnakeDirection(&snake);
+            UpdateSnake(&snake);
 
             DrawFood(food);
-            DrawSnake(snake, snakeSize);
+            DrawSnake(&snake);
+            DisplayPlayerScore(snake.size - 1);
 
-            if (IsSnakeHeadCollidingWithFood(snake[0], food)) {
+            if (IsSnakeSegmentColliding(snake.body[0], food)) {
                 PlaySound(eatSound);
-                food = GenerateNewFood(snake, snakeSize);
-                score++;
-                snakeSize++;
+                InitializeNewFood(&food, &snake);
+                snake.size++;
             }
 
-            if (IsSnakeBodySelfColliding(snake, snakeSize)) {
+            if (snake.isAlive && IsSnakeSelfColliding(&snake)) {
                 PlaySound(deathSound);
-                isGameOver = true;
+                snake.isAlive = false;
             }
-            
-            SetWindowTitle(GetTitle(score));
         } else {
             DisplayGameOverMessage();
             if (IsKeyPressed(KEY_R)) {
-                score = 0;
-                snakeSize = 1;
-                snakeDirection = (Vector2){1, 0};
-                food = GenerateNewFood(snake, snakeSize);
-                isGameOver = false;
+                InitializeNewSnake(&snake);
+                InitializeNewFood(&food, &snake);
             }
         }
 
@@ -70,9 +64,8 @@ int main(void) {
 
     UnloadSound(eatSound);
     UnloadSound(deathSound);
-    
     CloseAudioDevice();
-    CloseWindow();
 
+    CloseWindow();
     return 0;
 }

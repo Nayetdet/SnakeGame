@@ -1,20 +1,18 @@
-#include "config.h"
+#include "constants.h"
+#include "food.h"
+
 #include "utils.h"
 
-const char* GetTitle(int score) {
-    return TextFormat("Snake Game - Score: %d", score);
-}
-
 void DrawBackgroundGrid(void) {
-    DrawRectangleLines(0, 0, SCREEN_SIZE, SCREEN_SIZE, BACKGROUND_COLOR);
+    DrawRectangleLines(0, 0, SCREEN_SIZE, SCREEN_SIZE, BORDER_COLOR);
     for (int i = 0; i < SCREEN_SIZE; i += CELL_SIZE) {
-        DrawLine(0, i, SCREEN_SIZE, i, BACKGROUND_COLOR);
-        DrawLine(i, 0, i, SCREEN_SIZE, BACKGROUND_COLOR);
+        DrawLine(0, i, SCREEN_SIZE, i, BORDER_COLOR);
+        DrawLine(i, 0, i, SCREEN_SIZE, BORDER_COLOR);
     }
 }
 
 void DisplayGameOverMessage(void) {
-    const int fontSize = 24;
+    const int fontSize = 36;
     const char* message = "Game Over! Press R to restart";
 
     int textWidth = MeasureText(message, fontSize);
@@ -23,11 +21,9 @@ void DisplayGameOverMessage(void) {
     DrawText(message, x, y, fontSize, APPLE_COLOR);
 }
 
-int MathModulus(int a, int b) {
-    if (b < 0) {
-        return -MathModulus(-a, -b);
-    }
-
-    int ret = a % b;
-    return ret >= 0 ? ret : ret + b;
+void DisplayPlayerScore(int score) {
+    const char* message = TextFormat("Score: %d", score);
+    int textWidth = MeasureText(message, CELL_SIZE);
+    int x = (SCREEN_SIZE - textWidth) / 2;
+    DrawText(message, x, 0, CELL_SIZE, RAYWHITE);
 }

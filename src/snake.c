@@ -1,37 +1,43 @@
+#include <stdbool.h>
+
 #include <raylib.h>
 #include <raymath.h>
 
-#include "config.h"
-#include "utils.h"
+#include "constants.h"
+
 #include "snake.h"
 
-void DrawSnake(Vector2 snake[], int snakeSize) {
-    for (int i = 0; i < snakeSize; i++) {
-        int x = snake[i].x * CELL_SIZE;
-        int y = snake[i].y * CELL_SIZE;
+void InitializeNewSnake(Snake* snake) {
+    snake->size = 1;
+    snake->isAlive = true;
+    snake->body[0] = Vector2Zero();
+    snake->direction = (Vector2){1, 0};
+}
+
+void DrawSnake(Snake* snake) {
+    for (int i = 0; i < snake->size; i++) {
+        int x = snake->body[i].x * CELL_SIZE;
+        int y = snake->body[i].y * CELL_SIZE;
         DrawRectangle(x, y, CELL_SIZE, CELL_SIZE, SNAKE_COLOR);
     }
 }
 
-void ChangeSnakeDirection(Vector2* snakeDirection) {
-    if (IsKeyPressed(KEY_W) && snakeDirection->y != 1)
-        *snakeDirection = (Vector2){0, -1};
-
-    if (IsKeyPressed(KEY_A) && snakeDirection->x != 1)
-        *snakeDirection = (Vector2){-1, 0};
-
-    if (IsKeyPressed(KEY_S) && snakeDirection->y != -1)
-        *snakeDirection = (Vector2){0, 1};
-
-    if (IsKeyPressed(KEY_D) && snakeDirection->x != -1)
-        *snakeDirection = (Vector2){1, 0};
+void ChangeSnakeDirection(Snake* snake) {
+    if (IsKeyPressed(KEY_W) && snake->direction.y != 1)
+        snake->direction = (Vector2){0, -1};
+    else if (IsKeyPressed(KEY_A) && snake->direction.x != 1)
+        snake->direction = (Vector2){-1, 0};
+    else if (IsKeyPressed(KEY_S) && snake->direction.y != -1)
+        snake->direction = (Vector2){0, 1};
+    else if (IsKeyPressed(KEY_D) && snake->direction.x != -1)
+        snake->direction = (Vector2){1, 0};
 }
 
-void UpdateSnake(Vector2 snake[], Vector2 snakeDirection, int snakeSize) {
-    for (int i = snakeSize - 1; i > 0; i--) 
-        snake[i] = snake[i - 1];
+void UpdateSnake(Snake* snake) {
+    for (int i = snake->size - 1; i > 0; i--)
+        snake->body[i] = snake->body[i - 1];
 
-    snake[0] = Vector2Add(snake[0], snakeDirection);
-    snake[0].x = MathModulus(snake[0].x, NUM_CELLS_PER_SIDE);
-    snake[0].y = MathModulus(snake[0].y, NUM_CELLS_PER_SIDE);
+    snake->body[0] = Vector2Add(snake->body[0], snake->direction);
+    snake->body[0].x = ((int)snake->body[0].x + NUM_CELLS_PER_SIDE) % NUM_CELLS_PER_SIDE;
+    snake->body[0].y = ((int)snake->body[0].y + NUM_CELLS_PER_SIDE) % NUM_CELLS_PER_SIDE;
 }

@@ -3,17 +3,17 @@
 #include <raylib.h>
 #include <raymath.h>
 
-#include "config.h"
 #include "collisions.h"
+#include "constants.h"
+#include "snake.h"
+
 #include "food.h"
 
-Vector2 GenerateNewFood(Vector2 snake[], int snakeSize) {
-    Vector2 food;
+void InitializeNewFood(Vector2* food, Snake* snake) {
     do {
-        food.x = rand() % NUM_CELLS_PER_SIDE;
-        food.y = rand() % NUM_CELLS_PER_SIDE;
-    } while(IsSnakeBodyColliding(snake, food, snakeSize));
-    return food;
+        food->x = rand() % NUM_CELLS_PER_SIDE;
+        food->y = rand() % NUM_CELLS_PER_SIDE;
+    } while(IsSnakeColliding(snake, *food));
 }
 
 void DrawFood(Vector2 food) {

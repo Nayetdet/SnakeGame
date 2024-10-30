@@ -1,12 +1,22 @@
-#ifndef SNAKE_H
-#define SNAKE_H
+#ifndef GAME_H
+#define GAME_H
 
 #include <stdbool.h>
 
 #include <raylib.h>
 
-void DrawSnake(Vector2 snake[], int snakeSize);
-void ChangeSnakeDirection(Vector2* snakeDirection);
-void UpdateSnake(Vector2 snake[], Vector2 snakeDirection, int snakeSize);
+#include "constants.h"
+
+typedef struct Snake {
+    int size;
+    bool isAlive;
+    Vector2 body[SCREEN_SIZE];
+    Vector2 direction;
+} Snake;
+
+void InitializeNewSnake(Snake* snake);
+void DrawSnake(Snake* snake);
+void ChangeSnakeDirection(Snake* snake);
+void UpdateSnake(Snake* snake);
 
 #endif

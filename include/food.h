@@ -3,7 +3,9 @@
 
 #include <raylib.h>
 
-Vector2 GenerateNewFood(Vector2 snake[], int score);
+#include "snake.h"
+
+void InitializeNewFood(Vector2* food, Snake* snake);
 void DrawFood(Vector2 food);
 
 #endif
