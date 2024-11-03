@@ -46,7 +46,7 @@ int main(void) {
                 snake.size++;
             }
 
-            if (snake.isAlive && IsSnakeSelfColliding(&snake)) {
+            if (IsSnakeSelfColliding(&snake)) {
                 PlaySound(deathSound);
                 snake.isAlive = false;
             }
