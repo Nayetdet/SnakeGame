@@ -8,8 +8,8 @@ public static class Grid
     public const int NumCellsPerSide = 25;
     public static int ScreenSize => CellSize * NumCellsPerSide;
     
-    public static Color BackgroundColor { get; } = new Color(31, 27, 40, 255);
-    public static Color BorderColor { get; } = new Color(58, 53, 63, 255);
+    public static Color BackgroundColor { get; } = new(31, 27, 40, 255);
+    public static Color BorderColor { get; } = new(58, 53, 63, 255);
     
     public static void Draw()
     {

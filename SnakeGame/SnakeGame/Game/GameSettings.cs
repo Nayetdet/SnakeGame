@@ -5,7 +5,7 @@ namespace SnakeGame.Game;
 public static class GameSettings
 {
     public const string Title = "Snake";
-    public const int Fps = 12;
+    public const int Fps = 15;
     
     public static int WindowWidth => Grid.ScreenSize;
     public static int WindowHeight => Grid.ScreenSize;

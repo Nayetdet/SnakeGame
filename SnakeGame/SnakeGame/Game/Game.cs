@@ -59,7 +59,7 @@ public class Game : GameBase
         _food.Draw();
         _snake.Draw();
         
-        Hud.Draw(_snake.Size - 1);
+        Hud.Draw(_snake.Score);
 
         if (_snake.IsDead)
         {
