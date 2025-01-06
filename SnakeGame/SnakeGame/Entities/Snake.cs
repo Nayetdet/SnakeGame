@@ -1,6 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
-using SnakeGame.Core;
+using SnakeGame.Game;
 
 namespace SnakeGame.Entities;
 
@@ -36,8 +36,8 @@ public class Snake
         }
 
         var newHead = new Vector2(
-            (Head.X + _direction.X + Grid.NumCellsPerSide) % Grid.NumCellsPerSide,
-            (Head.Y + _direction.Y + Grid.NumCellsPerSide) % Grid.NumCellsPerSide
+            (Head.X + _direction.X + GameGrid.NumCellsPerSide) % GameGrid.NumCellsPerSide,
+            (Head.Y + _direction.Y + GameGrid.NumCellsPerSide) % GameGrid.NumCellsPerSide
         );
 
         _body.AddFirst(newHead);
@@ -52,9 +52,9 @@ public class Snake
     {
         foreach (var segment in _body)
         {
-            var x = (int)segment.X * Grid.CellSize;
-            var y = (int)segment.Y * Grid.CellSize;
-            Raylib.DrawRectangle(x, y, Grid.CellSize, Grid.CellSize, Color);
+            var x = (int)segment.X * GameGrid.CellSize;
+            var y = (int)segment.Y * GameGrid.CellSize;
+            Raylib.DrawRectangle(x, y, GameGrid.CellSize, GameGrid.CellSize, Color);
         }
     }
 

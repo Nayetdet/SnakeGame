@@ -1,5 +1,5 @@
 using Raylib_cs;
-using SnakeGame.Core;
+using SnakeGame.Game;
 
 namespace SnakeGame.UI;
 
@@ -12,8 +12,8 @@ public static class GameOverScreen
     {
         const string text = "Game Over! Press R to restart";
         var textWidth = Raylib.MeasureText(text, FontSize);
-        var x = (Grid.ScreenSize - textWidth) / 2;
-        var y = (Grid.ScreenSize - FontSize) / 2;
+        var x = (GameGrid.ScreenSize - textWidth) / 2;
+        var y = (GameGrid.ScreenSize - FontSize) / 2;
         Raylib.DrawText(text, x, y, FontSize, FontColor);        
     }
 }

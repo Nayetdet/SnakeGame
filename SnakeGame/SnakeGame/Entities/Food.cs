@@ -1,6 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
-using SnakeGame.Core;
+using SnakeGame.Game;
 
 namespace SnakeGame.Entities;
 
@@ -14,16 +14,16 @@ public class Food
         var random = new Random();
         do
         {
-            var x = random.Next(Grid.NumCellsPerSide);
-            var y = random.Next(Grid.NumCellsPerSide); 
+            var x = random.Next(GameGrid.NumCellsPerSide);
+            var y = random.Next(GameGrid.NumCellsPerSide); 
             Position = new Vector2(x, y);
         } while (snake.IsEating(this));
     }
     
     public void Draw()
     {
-        var x = (int)Position.X * Grid.CellSize;
-        var y = (int)Position.Y * Grid.CellSize;
-        Raylib.DrawRectangle(x, y, Grid.CellSize, Grid.CellSize, Color);
+        var x = (int)Position.X * GameGrid.CellSize;
+        var y = (int)Position.Y * GameGrid.CellSize;
+        Raylib.DrawRectangle(x, y, GameGrid.CellSize, GameGrid.CellSize, Color);
     }
 }

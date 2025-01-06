@@ -1,5 +1,4 @@
 using Raylib_cs;
-using SnakeGame.Core;
 using SnakeGame.Entities;
 using SnakeGame.UI;
 
@@ -54,7 +53,7 @@ public class Game : GameBase
     
     protected override void Draw()
     {
-        Grid.Draw();
+        GameGrid.Draw();
         
         _food.Draw();
         _snake.Draw();
